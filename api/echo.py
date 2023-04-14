@@ -3,7 +3,7 @@ from telegram import Update, Bot
 import os
 from typing import Optional
 
-##TOKEN = os.environ.get("5814904336:AAG1dikS2jVjgcpyQ2xC_Y-d1OBHGj4UAdU")
+TOKEN = os.environ.get("TOKEN")
 from fastapi import FastAPI,Request
 from pydantic import BaseModel
 
@@ -44,7 +44,7 @@ def webhook(webhook_data: TelegramWebhook):
     Telegram Webhook
     '''
     # Method 1
-    bot = Bot(token='5814904336:AAG1dikS2jVjgcpyQ2xC_Y-d1OBHGj4UAdU')
+    bot = Bot(token=TOKEN)
     update = Update.de_json(webhook_data, app.bot)
     dispatcher = Dispatcher(bot, None, workers=4)
     register_handlers(dispatcher)
@@ -59,7 +59,7 @@ def index():
     return {"message": "Hello World"}
 
 def main():
-    updater = Updater(token='5814904336:AAG1dikS2jVjgcpyQ2xC_Y-d1OBHGj4UAdU', use_context=True)
+    updater = Updater(token=TOKEN, use_context=True)
     dispatcher = updater.dispatcher
 
     register_handlers(dispatcher)
