@@ -8,7 +8,6 @@ from fastapi import FastAPI,Request
 from pydantic import BaseModel
 
 app = FastAPI()
-
 class TelegramWebhook(BaseModel):
     '''
     Telegram Webhook Model using Pydantic for request body validation
@@ -59,7 +58,7 @@ def index():
     return {"message": "Hello World"}
 
 def main():
-    updater = Updater(token=TOKEN, use_context=True)
+    updater = Updater(TOKEN, use_context=True)
     dispatcher = updater.dispatcher
 
     register_handlers(dispatcher)
