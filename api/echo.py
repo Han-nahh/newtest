@@ -44,7 +44,7 @@ def webhook(webhook_data: TelegramWebhook):
     Telegram Webhook
     '''
     # Method 1
-    bot = Bot(token=TOKEN)
+    bot = Bot(token='5814904336:AAG1dikS2jVjgcpyQ2xC_Y-d1OBHGj4UAdU')
     update = Update.de_json(webhook_data, app.bot)
     dispatcher = Dispatcher(bot, None, workers=4)
     register_handlers(dispatcher)
