@@ -144,7 +144,7 @@ from pydantic import BaseModel
 from telegram import Update, Bot
 from telegram.ext import Dispatcher, MessageHandler, Filters, CommandHandler
 
-TOKEN = "1789117801:AAE7kPyd23Xbq3kPSvFH5OHMzAkHY96xJsc"
+TOKEN = os.environ.get("TOKEN")
 
 app = FastAPI()
 
@@ -169,9 +169,14 @@ class TelegramWebhook(BaseModel):
 def start(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
 
+def stop(update, context):
+    context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please shut up!")
+
 def register_handlers(dispatcher):
     start_handler = CommandHandler('start', start)
     dispatcher.add_handler(start_handler)
+    stop_handler = CommandHandler('stop', stop)
+    dispatcher.add_handler(stop_handler)
 
 @app.post("/webhook")
 def webhook(webhook_data: TelegramWebhook):
@@ -179,19 +184,19 @@ def webhook(webhook_data: TelegramWebhook):
     Telegram Webhook
     '''
     # Method 1
-    bot = Bot(token=TOKEN)
-    update = Update.de_json(webhook_data.__dict__, bot)
-    dispatcher = Dispatcher(bot, None, workers=4)
-    register_handlers(dispatcher)
+    # bot = Bot(token=TOKEN)
+    # update = Update.de_json(webhook_data.__dict__, bot)
+    # dispatcher = Dispatcher(bot, None, workers=4)
+    # register_handlers(dispatcher)
 
-    # handle webhook request
-    dispatcher.process_update(update)
+    # # handle webhook request
+    # dispatcher.process_update(update)
 
     # Method 2
     # you can just handle the webhook request here without using python-telegram-bot
-    # if webhook_data.message:
-    #     if webhook_data.message.text == '/start':
-    #         send_message(webhook_data.message.chat.id, 'Hello World')
+    if webhook_data.message:
+        if webhook_data.message.text == '/start':
+            send_message(webhook_data.message.chat.id, 'Hello World')
     
     return {"message": "ok"}
 
@@ -201,4 +206,4 @@ def index():
 
 
 if __name__ == '__main__':
-    print("hi")
+    print(TOKEN)
