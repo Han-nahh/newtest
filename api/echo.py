@@ -144,7 +144,7 @@ from pydantic import BaseModel
 from telegram import Update, Bot
 from telegram.ext import Dispatcher, MessageHandler, Filters, CommandHandler
 
-TOKEN = os.environ.get("TOKEN")
+TOKEN = '5814904336:AAG1dikS2jVjgcpyQ2xC_Y-d1OBHGj4UAdU'
 
 app = FastAPI()
 
@@ -178,25 +178,25 @@ def register_handlers(dispatcher):
     stop_handler = CommandHandler('stop', stop)
     dispatcher.add_handler(stop_handler)
 
-@app.post("/webhook")
+@app.post("/webhook by")
 def webhook(webhook_data: TelegramWebhook):
     '''
     Telegram Webhook
     '''
     # Method 1
-    # bot = Bot(token=TOKEN)
-    # update = Update.de_json(webhook_data.__dict__, bot)
-    # dispatcher = Dispatcher(bot, None, workers=4)
-    # register_handlers(dispatcher)
+    bot = Bot(token=TOKEN)
+    update = Update.de_json(webhook_data.__dict__, bot)
+    dispatcher = Dispatcher(bot, None, workers=4)
+    register_handlers(dispatcher)
 
-    # # handle webhook request
-    # dispatcher.process_update(update)
+    # handle webhook request
+    dispatcher.process_update(update)
 
     # Method 2
     # you can just handle the webhook request here without using python-telegram-bot
-    if webhook_data.message:
-        if webhook_data.message.text == '/start':
-            send_message(webhook_data.message.chat.id, 'Hello World')
+    # if webhook_data.message:
+    #     if webhook_data.message.text == '/start':
+    #         send_message(webhook_data.message.chat.id, 'Hello World')
     
     return {"message": "ok"}
 
@@ -205,5 +205,3 @@ def index():
     return {"message": "Hello World"}
 
 
-if __name__ == '__main__':
-    print(TOKEN)
